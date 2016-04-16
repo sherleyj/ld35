@@ -79,6 +79,15 @@
         // }
     }
 
+    /* utils */
+
+    function spritesCollide(a, b, overlapPercent) {
+        overlapPercent = overlapPercent == undefined ? 1 : overlapPercent;
+
+        return (Math.abs(a.x - b.x) * 2 < (a.width * overlapPercent + b.width)) &&
+               (Math.abs(a.y - b.y) * 2 < (a.height * overlapPercent + b.height));
+    }
+
     };
     </script>
 
