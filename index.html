@@ -48,16 +48,22 @@
         }
 
     function update() {
-        var velocity = .20
+        var velocity = .20;
         if (cursors.left.isDown)
         {
             //  Move to the left
-            player.x -= game.time.elapsed*velocity;
+            player.x -= game.time.elapsed * velocity;
+            if(player.x < 0){
+                player.x = game.world.width;
+            }
         }
         else if (cursors.right.isDown)
         {
             //  Move to the right
-            player.x += game.time.elapsed*velocity;
+            player.x += game.time.elapsed * velocity;
+            if(player.x > game.world.width){
+                player.x = 0;
+            }
         }
         else
         {
@@ -71,7 +77,6 @@
         // {
         //     player.body.velocity.y = -350;
         // }
-
     }
 
     };
