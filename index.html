@@ -29,21 +29,14 @@
         function create () {
             game.add.sprite(0, 0, 'bg');
 
-            player = game.add.sprite(64, game.world.height - 90, 'ship', 2);
-            fire = game.add.sprite(0, 56, 'ship', 13);
-            player.addChild(fire);
-
-            bullets = game.add.group();
-
-            fire.animations.add('run', [13, 12], 5, true);
-            fire.animations.play('run');
+            createPlayer();
 
             // Our controls
             cursors = game.input.keyboard.createCursorKeys();
         }
 
         function update() {
-            var velocity = 0.20;
+            var velocity = 0.40;
 
             if (cursors.left.isDown) {
                 // Move to the left
@@ -58,6 +51,28 @@
                     player.x = 0;
                 }
             }
+
+            // TODO - figure out delay
+            if (game.input.keyboard.event && game.input.keyboard.event.code == "Space") {
+                player.fireBullet();
+                game.input.keyboard.event = null;
+            }
+        }
+
+        /* Player */
+        function createPlayer() {
+            player = game.add.sprite(64, game.world.height - 90, 'ship', 2);
+            fire = game.add.sprite(0, 56, 'ship', 13);
+            player.addChild(fire);
+
+            fire.animations.add('run', [13, 12], 5, true);
+            fire.animations.play('run');
+
+            bullets = game.add.group();
+
+            player.fireBullet = function() {
+                console.log("BOOM");
+            };
         }
 
         /* utils */
