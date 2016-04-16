@@ -42,33 +42,32 @@
             cursors = game.input.keyboard.createCursorKeys();
         }
 
-    function update() {
-        var velocity = 0.20;
+        function update() {
+            var velocity = 0.20;
 
-        if (cursors.left.isDown) {
-            // Move to the left
-            player.x -= game.time.elapsed * velocity;
-            if (player.x < 0) {
-                player.x = game.world.width;
+            if (cursors.left.isDown) {
+                // Move to the left
+                player.x -= game.time.elapsed * velocity;
+                if (player.x < 0) {
+                    player.x = game.world.width;
+                }
+            } else if (cursors.right.isDown) {
+                // Move to the right
+                player.x += game.time.elapsed * velocity;
+                if (player.x > game.world.width) {
+                    player.x = 0;
+                }
             }
         }
-        else if (cursors.right.isDown) {
-            // Move to the right
-            player.x += game.time.elapsed * velocity;
-            if (player.x > game.world.width) {
-                player.x = 0;
-            }
+
+        /* utils */
+
+        function spritesCollide(a, b, overlapPercent) {
+            overlapPercent = overlapPercent == undefined ? 1 : overlapPercent;
+
+            return (Math.abs(a.x - b.x) * 2 < (a.width * overlapPercent + b.width)) &&
+                   (Math.abs(a.y - b.y) * 2 < (a.height * overlapPercent + b.height));
         }
-    }
-
-    /* utils */
-
-    function spritesCollide(a, b, overlapPercent) {
-        overlapPercent = overlapPercent == undefined ? 1 : overlapPercent;
-
-        return (Math.abs(a.x - b.x) * 2 < (a.width * overlapPercent + b.width)) &&
-               (Math.abs(a.y - b.y) * 2 < (a.height * overlapPercent + b.height));
-    }
 
     };
     </script>
