@@ -57,14 +57,13 @@
                 }
             }
 
-            if(this.spaceKey.isDown) {
+            if (this.spaceKey.isDown) {
                 player.fireBullet();
             } else {
                 player.lastFired = 0; // reset fire tracker on key up
             }
 
-            if(bullets.length > 0){
-                console.log("bullet!");
+            if (bullets.length > 0) {
                 updateBullets();
             }
 
@@ -90,7 +89,6 @@
                 }
 
                 if (game.time.now > player.lastFired + 250) {
-                    console.log("BOOM");
                     player.lastFired = game.time.now;
                     player.numBullets--;
                     player.frame = player.numBullets;
@@ -105,20 +103,21 @@
             // move it towards the player on the x and y axis
             // if the bullet has reached the player, then inc player bullets and destroy bullet
 
-            for(var i = 0; i < bullets.children.length; i++){
-                if(bullets.children[i].up){
-                    bullets.children[i].y -= game.time.elapsed * .3;
-                
-                    if(bullets.children[i].y < 5){
-                    bullets.children[i].up = false;
+            var BULLET_SPEED = 0.3;
+
+            for (var i = 0; i < bullets.children.length; i++) {
+                if (bullets.children[i].up) {
+                    bullets.children[i].y -= game.time.elapsed * BULLET_SPEED;
+
+                    if (bullets.children[i].y < 5) {
+                        bullets.children[i].up = false;
                     }
-                }
-                else {
-                    bullets.children[i].y += game.time.elapsed * .3;
+                } else {
+                    bullets.children[i].y += game.time.elapsed * BULLET_SPEED;
                     bullets.children[i].x = player.x;
-                    if(bullets.children[i].y > player.y){
+                    if (bullets.children[i].y > player.y) {
                         bullets.children[i].destroy();
-                        player.numBullets++; 
+                        player.numBullets++;
                         player.frame = player.numBullets;
                     }
                 }
@@ -128,7 +127,7 @@
 
         function createBullet() {
             // add a new bullet to the game and to the bullet group
-            activeBullet = game.add.sprite(player.x, player.y,'ship', 8);
+            activeBullet = game.add.sprite(player.x, player.y, 'ship', 8);
             activeBullet.up = true;
             bullets.add(activeBullet);
         }
