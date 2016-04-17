@@ -24,6 +24,7 @@
 
             game.load.audio('shoot', 'shoot.mp3');
             game.load.audio('reattach', 'reattach.mp3');
+            game.load.audio('explosion', 'explosion.mp3');
 
         }
 
@@ -36,12 +37,14 @@
 
         var sfxShoot;
         var sfxReattach;
+        var sfxExplosion;
 
         function create () {
             game.add.sprite(0, 0, 'bg');
 
             sfxShoot = game.add.audio('shoot');
             sfxReattach = game.add.audio('reattach');
+            sfxExplosion = game.add.audio('explosion');
 
             createPlayer();
 
@@ -169,6 +172,10 @@
 
         function addEnemy(x, y) {
             var enemy = game.add.sprite(x, -80, 'enemy', 1);
+
+            enemy.animations.add('fly', [0, 1], 7, true);
+            enemy.animations.play('fly');
+
             enemy.anchor.x = 0.5;
             enemy.anchor.y = 0.5;
 
@@ -221,7 +228,23 @@
         }
 
         function checkEnemyBulletCollisions(enemy) {
+            for (var i = 0; i < bullets.children.length; i++) {
+                var bullet = bullets.children[i];
 
+                if (spritesCollide(bullet, enemy, 0.2)) {
+                    enemy.destroy();
+                    sfxExplosion.play();
+
+                    var explosionEmitter = game.add.emitter(0, 0, 100);
+                    explosionEmitter.makeParticles('enemy', 4);
+                    explosionEmitter.x = bullet.x;
+                    explosionEmitter.y = bullet.y;
+                    explosionEmitter.gravity = 0;
+                    explosionEmitter.autoAlpha = true;
+                    explosionEmitter.setAlpha(1, 0, 800);
+                    explosionEmitter.start(true, 800, null, 20);
+                }
+            }
         }
 
         /* utils */
