@@ -25,6 +25,7 @@
             game.load.audio('shoot', 'shoot.mp3');
             game.load.audio('reattach', 'reattach.mp3');
             game.load.audio('explosion', 'explosion.mp3');
+            game.load.audio('music', 'music.mp3');
 
         }
 
@@ -38,13 +39,23 @@
         var sfxShoot;
         var sfxReattach;
         var sfxExplosion;
+        var sfxMusic;
 
         function create () {
+            game.stats = {
+                wave: 0,
+                score: 0,
+            };
+
             game.add.sprite(0, 0, 'bg');
 
             sfxShoot = game.add.audio('shoot');
             sfxReattach = game.add.audio('reattach');
             sfxExplosion = game.add.audio('explosion');
+            sfxMusic = game.add.audio('music');
+
+            sfxMusic.loop = true;
+            sfxMusic.play();
 
             createPlayer();
 
@@ -189,7 +200,7 @@
 
             enemy.targetX = x;
             enemy.targetY = y;
-            
+
             enemy.dir_x = Math.random() < 0.5 ? 1 : -1;
             enemy.dir_y = Math.random() < 0.5 ? 1 : -1;
             enemy.timeElapsed = 0;
@@ -205,6 +216,8 @@
             addEnemy(ySpacing * 3, 80);
             addEnemy(ySpacing * 4, 140);
             addEnemy(ySpacing * 5, 80);
+
+            game.stats.wave++;
         }
 
         function updateEnemies() {
@@ -259,6 +272,8 @@
                     explosionEmitter.autoAlpha = true;
                     explosionEmitter.setAlpha(1, 0, 800);
                     explosionEmitter.start(true, 800, null, 20);
+
+                    game.stats.score += 50; // points per enemy?
                 }
             }
         }
