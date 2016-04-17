@@ -24,6 +24,7 @@
 
             game.load.audio('shoot', 'shoot.mp3');
             game.load.audio('reattach', 'reattach.mp3');
+            game.load.audio('explosion', 'explosion.mp3');
 
         }
 
@@ -36,12 +37,14 @@
 
         var sfxShoot;
         var sfxReattach;
+        var sfxExplosion;
 
         function create () {
             game.add.sprite(0, 0, 'bg');
 
             sfxShoot = game.add.audio('shoot');
             sfxReattach = game.add.audio('reattach');
+            sfxExplosion = game.add.audio('explosion');
 
             createPlayer();
 
@@ -212,6 +215,7 @@
 
                 if (spritesCollide(bullet, enemy, 0.2)) {
                     enemy.destroy();
+                    sfxExplosion.play();
                 }
             }
         }
