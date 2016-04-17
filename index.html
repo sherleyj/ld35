@@ -212,9 +212,9 @@
                 var enemy = enemies.children[i];
 
                 if (enemy.y < enemy.targetY) {
-                    enemy.y += game.time.elapsed * ENEMY_SPEED;
+                    enemy.y += game.boundedElapsed * ENEMY_SPEED;
                 } else {
-                    enemy.x += game.time.elapsed * ENEMY_SPEED * enemy.dir_x;
+                    enemy.x += game.boundedElapsed * ENEMY_SPEED * enemy.dir_x;
                     checkEnemyOutOfBounds(enemy);
                 }
 
