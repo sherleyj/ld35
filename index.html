@@ -78,13 +78,21 @@
             fire.animations.add('run', [13, 12], 5, true);
             fire.animations.play('run');
 
+            player.numBullets = 2;
+
             bullets = game.add.group();
 
             player.lastFired = 0;
             player.fireBullet = function() {
+                if (player.numBullets == 0) {
+                    return; // can't shoot if we have no bullets
+                }
+
                 if (game.time.now > player.lastFired + 250) {
                     console.log("BOOM");
                     player.lastFired = game.time.now;
+                    player.numBullets--;
+                    player.frame = player.numBullets;
                 }
             };
         }
