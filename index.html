@@ -135,7 +135,7 @@
                     }
 
                     var playerBulletDelta = player.x - bullet.x;
-                    bullet.x += playerBulletDelta * (BULLET_SPEED / 10);
+                    bullet.x += playerBulletDelta * (BULLET_SPEED / 5);
 
                     if (bullet.y > player.y && Math.abs(playerBulletDelta) < 20) {
                         bullet.destroy();
