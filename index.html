@@ -181,7 +181,8 @@
 
             enemy.targetX = x;
             enemy.targetY = y;
-            enemy.left = Math.random() < 0.5 ? 1 : 0;
+            enemy.west = Math.random() < 0.5 ? 1 : 0;
+            console.log(enemy.west);
 
             enemies.add(enemy);
         }
@@ -209,16 +210,15 @@
                 if (enemy.y < enemy.targetY) {
                     enemy.y += game.time.elapsed * ENEMY_SPEED;
                 } else {
-                    if(enemy.left > 0){
+                    if (enemy.west > 0) {
                         enemy.x -= game.time.elapsed * ENEMY_SPEED;
-                        if (enemy.x < 30) {
-                            enemy.left = 0;
+                        if (enemy.x <= 30) {
+                            enemy.west = 0;
                         }
-                    }
-                    else {
+                    } else {
                         enemy.x += game.time.elapsed * ENEMY_SPEED;
-                        if (enemy.x > game.world.width - 30) {
-                            enemy.left = 1;
+                        if (enemy.x >= game.world.width - 30) {
+                            enemy.west = 1;
                         }
                     }
                 }
