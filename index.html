@@ -26,8 +26,6 @@
         var cursors;
         var fire;
         var spaceKey;
-        var bullet;
-        var activeBullet;
 
         function create () {
             game.add.sprite(0, 0, 'bg');
@@ -106,17 +104,24 @@
             var BULLET_SPEED = 0.3;
 
             for (var i = 0; i < bullets.children.length; i++) {
-                if (bullets.children[i].up) {
-                    bullets.children[i].y -= game.time.elapsed * BULLET_SPEED;
+                var bullet = bullets.children[i];
 
-                    if (bullets.children[i].y < 5) {
-                        bullets.children[i].up = false;
+                if (bullet.up) {
+                    bullet.y -= game.time.elapsed * BULLET_SPEED;
+
+                    if (bullet.y < 5) {
+                        bullet.up = false;
                     }
                 } else {
-                    bullets.children[i].y += game.time.elapsed * BULLET_SPEED;
-                    bullets.children[i].x = player.x;
-                    if (bullets.children[i].y > player.y) {
-                        bullets.children[i].destroy();
+                    bullet.y += game.time.elapsed * BULLET_SPEED;
+
+                    var playerBulletDelta = player.x - bullet.x;
+                    if (playerBulletDelta) {
+                        bullet.x += game.time.elapsed * BULLET_SPEED * 1.2 * (playerBulletDelta / Math.abs(playerBulletDelta));
+                    }
+
+                    if (bullet.y > player.y) {
+                        bullet.destroy();
                         player.numBullets++;
                         player.frame = player.numBullets;
                     }
@@ -127,7 +132,7 @@
 
         function createBullet() {
             // add a new bullet to the game and to the bullet group
-            activeBullet = game.add.sprite(player.x, player.y, 'ship', 8);
+            var activeBullet = game.add.sprite(player.x, player.y, 'ship', 8);
             activeBullet.up = true;
             bullets.add(activeBullet);
         }
