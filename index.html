@@ -20,6 +20,8 @@
             game.load.spritesheet('ship', 'ship.png', 64, 64, 24);
             game.load.image('bg', 'bg.png');
 
+            game.load.spritesheet('enemy', 'enemies.png', 64, 64, 8);
+
             game.load.audio('shoot', 'shoot.mp3');
             game.load.audio('reattach', 'reattach.mp3');
 
@@ -29,6 +31,8 @@
         var cursors;
         var fire;
         var spaceKey;
+
+        var enemies;
 
         var sfxShoot;
         var sfxReattach;
@@ -40,6 +44,8 @@
             sfxReattach = game.add.audio('reattach');
 
             createPlayer();
+
+            enemies = game.add.group();
 
             // Our controls
             cursors = game.input.keyboard.createCursorKeys();
@@ -74,6 +80,7 @@
                 updateBullets();
             }
 
+            updateEnemies();
         }
 
         /* Player */
@@ -156,6 +163,51 @@
             activeBullet.up = true;
             bullets.add(activeBullet);
             sfxShoot.play();
+        }
+
+        /* enemies */
+
+        function addEnemy(x, y) {
+            var enemy = game.add.sprite(x, -80, 'enemy', 1);
+            enemy.anchor.x = 0.5;
+            enemy.anchor.y = 0.5;
+
+            enemy.targetX = x;
+            enemy.targetY = y;
+
+            enemies.add(enemy);
+        }
+
+        function addWave() {
+            var ySpacing = game.world.width / 6;
+
+            addEnemy(ySpacing * 1, 80);
+            addEnemy(ySpacing * 2, 120);
+            addEnemy(ySpacing * 3, 80);
+            addEnemy(ySpacing * 4, 120);
+            addEnemy(ySpacing * 5, 80);
+        }
+
+        function updateEnemies() {
+            if (enemies.length == 0) {
+                addWave();
+            }
+
+            var ENEMY_SPEED = 0.1;
+
+            for (var i = 0; i < enemies.children.length; i++) {
+                var enemy = enemies.children[i];
+
+                if (enemy.y < enemy.targetY) {
+                    enemy.y += game.time.elapsed * ENEMY_SPEED;
+                }
+
+                checkEnemyBulletCollisions(enemy);
+            }
+        }
+
+        function checkEnemyBulletCollisions(enemy) {
+
         }
 
         /* utils */
