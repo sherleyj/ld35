@@ -57,17 +57,19 @@
         }
 
         function update() {
+            game.boundedElapsed = Math.min(game.time.elapsed, 50);
+
             var velocity = 0.40;
 
             if (cursors.left.isDown) {
                 // Move to the left
-                player.x -= game.time.elapsed * velocity;
+                player.x -= game.boundedElapsed * velocity;
                 if (player.x < 0) {
                     player.x = 0;
                 }
             } else if (cursors.right.isDown) {
                 // Move to the right
-                player.x += game.time.elapsed * velocity;
+                player.x += game.boundedElapsed * velocity;
                 if (player.x > game.world.width) {
                     player.x = game.world.width;
                 }
@@ -131,17 +133,17 @@
             for (var i = 0; i < bullets.children.length; i++) {
                 var bullet = bullets.children[i];
 
-                bullet.angle += game.time.elapsed * BULLET_SPEED;
+                bullet.angle += game.boundedElapsed * BULLET_SPEED;
 
                 if (bullet.up) {
-                    bullet.y -= game.time.elapsed * BULLET_SPEED;
+                    bullet.y -= game.boundedElapsed * BULLET_SPEED;
 
                     if (bullet.y < 5) {
                         bullet.up = false;
                     }
                 } else {
                     if (bullet.y <= player.y) {
-                        bullet.y += game.time.elapsed * BULLET_SPEED;
+                        bullet.y += game.boundedElapsed * BULLET_SPEED;
                     }
 
                     var playerBulletDelta = player.x - bullet.x;
