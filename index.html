@@ -57,7 +57,9 @@
             }
 
             if(this.spaceKey.isDown) {
-               player.fireBullet(); 
+                player.fireBullet();
+            } else {
+                player.lastFired = 0; // reset fire tracker on key up
             }
 
             // TODO - figure out delay
@@ -80,7 +82,7 @@
 
             player.lastFired = 0;
             player.fireBullet = function() {
-                if (game.time.now > player.lastFired - 50) {
+                if (game.time.now > player.lastFired + 250) {
                     console.log("BOOM");
                     player.lastFired = game.time.now;
                 }
