@@ -49,7 +49,7 @@
             createPlayer();
 
             enemies = game.add.group();
-
+            enemyBullets = game.add.group();
             // Our controls
             cursors = game.input.keyboard.createCursorKeys();
             this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -86,6 +86,10 @@
             }
 
             updateEnemies();
+
+            if (enemyBullets.length > 0) {
+                updateEnemyBullets();
+            }
         }
 
         /* Player */
@@ -170,6 +174,27 @@
             sfxShoot.play();
         }
 
+        function createEnemyBullet(enemy) {
+            var enemyBullet = game.add.sprite(enemy.x, enemy.y, 'enemy', 5);
+            enemyBullet.anchor.x = 0.5;
+            enemyBullet.anchor.y = 0.5;
+            enemyBullet.animations.add('enemy', [4, 5], 5, true);
+            enemyBullets.add(enemyBullet);
+        }
+
+        function updateEnemyBullets() {
+            var enemyBulletSpeed = .4;
+            console.log("updateEnemyBullets");
+
+            for(var i = 0; i < enemyBullets.children.length; i++) {
+                var enemyBullet = enemyBullets.children[i];
+                enemyBullet.y += game.boundedElapsed * enemyBulletSpeed;
+                if (enemyBullet.y > game.world.height) {
+                    enemyBullet.destroy();
+                }
+            }
+        }
+
         /* enemies */
 
         function addEnemy(x, y) {
@@ -187,6 +212,8 @@
             enemy.dir_x = Math.random() < 0.5 ? 1 : -1;
             enemy.dir_y = Math.random() < 0.5 ? 1 : -1;
             enemy.timeElapsed = 0;
+
+            enemy.lastFired = 0;
 
             enemies.add(enemy);
         }
@@ -216,8 +243,12 @@
                 } else {
                     enemy.x += game.boundedElapsed * ENEMY_SPEED * enemy.dir_x;
                     checkEnemyOutOfBounds(enemy);
-                }
 
+                    if (game.time.now > enemy.lastFired + 4000) {
+                        enemy.lastFired = game.time.now;
+                        createEnemyBullet(enemy);
+                    }
+                }
                 checkEnemyBulletCollisions(enemy);
             }
         }
