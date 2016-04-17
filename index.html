@@ -172,6 +172,10 @@
 
         function addEnemy(x, y) {
             var enemy = game.add.sprite(x, -80, 'enemy', 1);
+
+            enemy.animations.add('fly', [0, 1], 7, true);
+            enemy.animations.play('fly');
+
             enemy.anchor.x = 0.5;
             enemy.anchor.y = 0.5;
 
