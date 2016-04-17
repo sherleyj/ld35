@@ -213,15 +213,25 @@
                     enemy.y += game.time.elapsed * ENEMY_SPEED;
                 } else {
                     enemy.x += game.time.elapsed * ENEMY_SPEED * enemy.dir_x;
-                    if (enemy.x <= 30) {
-                        enemy.dir_x = 1;
-                    }
-                    else if (enemy.x >= game.world.width - 30) {
-                        enemy.dir_x = -1;
-                    }
+                    checkEnemyOutOfBounds(enemy);
                 }
 
                 checkEnemyBulletCollisions(enemy);
+            }
+        }
+
+        function checkEnemyOutOfBounds(enemy) {
+            if (enemy.x <= 30) {
+                enemy.dir_x = 1;
+            }
+            if (enemy.x >= game.world.width - 30) {
+                enemy.dir_x = -1;
+            }
+            if (enemy.y <= 30) {
+                enemy.dir_y = 1;
+            }
+            if (enemy.y >= game.world.height - 100){
+                enemy.dir_y = -1;
             }
         }
 
