@@ -78,8 +78,12 @@
 
             bullets = game.add.group();
 
+            player.lastFired = 0;
             player.fireBullet = function() {
-                console.log("BOOM");
+                if (game.time.now > player.lastFired - 50) {
+                    console.log("BOOM");
+                    player.lastFired = game.time.now;
+                }
             };
         }
 
