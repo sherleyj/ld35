@@ -216,6 +216,15 @@
                 if (spritesCollide(bullet, enemy, 0.2)) {
                     enemy.destroy();
                     sfxExplosion.play();
+
+                    var explosionEmitter = game.add.emitter(0, 0, 100);
+                    explosionEmitter.makeParticles('enemy', 4);
+                    explosionEmitter.x = bullet.x;
+                    explosionEmitter.y = bullet.y;
+                    explosionEmitter.gravity = 0;
+                    explosionEmitter.autoAlpha = true;
+                    explosionEmitter.setAlpha(1, 0, 800);
+                    explosionEmitter.start(true, 800, null, 20);
                 }
             }
         }
