@@ -207,7 +207,13 @@
         }
 
         function checkEnemyBulletCollisions(enemy) {
+            for (var i = 0; i < bullets.children.length; i++) {
+                var bullet = bullets.children[i];
 
+                if (spritesCollide(bullet, enemy, 0.2)) {
+                    enemy.destroy();
+                }
+            }
         }
 
         /* utils */
