@@ -27,6 +27,7 @@
         var fire;
         var spaceKey;
         var bullet;
+        var activeBullet;
 
         function create () {
             game.add.sprite(0, 0, 'bg');
@@ -61,6 +62,12 @@
             } else {
                 player.lastFired = 0; // reset fire tracker on key up
             }
+
+            if(bullets.length > 0){
+                console.log("bullet!");
+                updateBullets();
+            }
+
         }
 
         /* Player */
@@ -87,6 +94,7 @@
                     player.lastFired = game.time.now;
                     player.numBullets--;
                     player.frame = player.numBullets;
+                    createBullet();
                 }
             };
         }
@@ -96,10 +104,33 @@
             // move it upwards until it reaches the end of the screen
             // move it towards the player on the x and y axis
             // if the bullet has reached the player, then inc player bullets and destroy bullet
+
+            for(var i = 0; i < bullets.children.length; i++){
+                if(bullets.children[i].up){
+                    bullets.children[i].y -= game.time.elapsed * .3;
+                
+                    if(bullets.children[i].y < 5){
+                    bullets.children[i].up = false;
+                    }
+                }
+                else {
+                    bullets.children[i].y += game.time.elapsed * .3;
+                    bullets.children[i].x = player.x;
+                    if(bullets.children[i].y > player.y){
+                        bullets.children[i].destroy();
+                        player.numBullets++; 
+                        player.frame = player.numBullets;
+                    }
+                }
+            }
+
         }
 
         function createBullet() {
             // add a new bullet to the game and to the bullet group
+            activeBullet = game.add.sprite(player.x, player.y,'ship', 8);
+            activeBullet.up = true;
+            bullets.add(activeBullet);
         }
 
         /* utils */
