@@ -20,6 +20,9 @@
             game.load.spritesheet('ship', 'ship.png', 64, 64, 24);
             game.load.image('bg', 'bg.png');
 
+            game.load.audio('shoot', 'shoot.mp3');
+            game.load.audio('reattach', 'reattach.mp3');
+
         }
 
         var player;
@@ -27,8 +30,14 @@
         var fire;
         var spaceKey;
 
+        var sfxShoot;
+        var sfxReattach;
+
         function create () {
             game.add.sprite(0, 0, 'bg');
+
+            sfxShoot = game.add.audio('shoot');
+            sfxReattach = game.add.audio('reattach');
 
             createPlayer();
 
@@ -130,6 +139,7 @@
 
                     if (bullet.y > player.y && Math.abs(playerBulletDelta) < 20) {
                         bullet.destroy();
+                        sfxReattach.play();
                         player.numBullets++;
                         player.frame = player.numBullets;
                     }
@@ -145,6 +155,7 @@
             activeBullet.anchor.y = 0.5;
             activeBullet.up = true;
             bullets.add(activeBullet);
+            sfxShoot.play();
         }
 
         /* utils */
