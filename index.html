@@ -100,6 +100,7 @@
 
             if (enemyBullets.length > 0) {
                 updateEnemyBullets();
+                checkPlayerBulletCollisions(player);
             }
         }
 
@@ -119,6 +120,7 @@
             fire.animations.play('run');
 
             player.numBullets = 6;
+            player.lives = player.numBullets;
 
             bullets = game.add.group();
 
@@ -202,7 +204,6 @@
 
         function updateEnemyBullets() {
             var enemyBulletSpeed = .2;
-            console.log("updateEnemyBullets");
 
             for(var i = 0; i < enemyBullets.children.length; i++) {
                 var enemyBullet = enemyBullets.children[i];
@@ -306,6 +307,26 @@
                     explosionEmitter.start(true, 800, null, 20);
 
                     game.stats.score += 50; // points per enemy?
+                }
+            }
+        }
+
+        function checkPlayerBulletCollisions(player) {
+            for (var i = 0; i < enemyBullets.children.length; i++){
+                var enemyBullet = enemyBullets.children[i];
+
+                if (spritesCollide(enemyBullet, player, 0.1)) {
+                    if (player.lives > 0) {
+                        player.numBullets--;
+                        player.lives--;
+                        enemyBullet.destroy();
+                        player.frame = player.numBullets;
+                        console.log(player.lives);
+                    } else {
+                        player.destroy();
+                        enemyBullet.destroy();
+                        console.log("GAME OVER!");
+                    }
                 }
             }
         }
