@@ -195,12 +195,13 @@
             var enemyBullet = game.add.sprite(enemy.x, enemy.y, 'enemy', 5);
             enemyBullet.anchor.x = 0.5;
             enemyBullet.anchor.y = 0.5;
-            enemyBullet.animations.add('enemy', [4, 5], 5, true);
+            enemyBullet.animations.add('enemy', [5, 6], 5, true);
+            enemyBullet.animations.play('enemy');
             enemyBullets.add(enemyBullet);
         }
 
         function updateEnemyBullets() {
-            var enemyBulletSpeed = .4;
+            var enemyBulletSpeed = .2;
             console.log("updateEnemyBullets");
 
             for(var i = 0; i < enemyBullets.children.length; i++) {
